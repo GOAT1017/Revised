@@ -3015,7 +3015,10 @@ function deleteJournalEntry(index) {
 }
 
 // Update the form submission to handle both add and edit
-document.getElementById("journalForm").onsubmit = function(e) {
+document.addEventListener("DOMContentLoaded", function() {
+  const journalForm = document.getElementById("journalForm");
+  if (journalForm) {
+    journalForm.onsubmit = function(e) {
   e.preventDefault();
   
   const entry = {
@@ -3060,13 +3063,21 @@ document.getElementById("journalForm").onsubmit = function(e) {
   this.reset();
   document.getElementById("journal-pnl").value = "";
   
-  if (window.renderDashboard) window.renderDashboard();
+  if (window.renderDashboard) {
+    try {
+      window.renderDashboard();
+    } catch (error) {
+      console.warn('Dashboard rendering failed:', error);
+    }
+  }
   if (window.renderJournalTable) window.renderJournalTable();
   
   setTimeout(() => {
     document.getElementById("journal-message").textContent = "";
   }, 3000);
-};
+    };
+  }
+});
 </script>
 <style>
 /* --- Training Manual Color Overhaul for Dark Syllabus Look --- */
